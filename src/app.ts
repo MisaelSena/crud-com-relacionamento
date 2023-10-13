@@ -8,10 +8,13 @@ const app = express();
 
 app.use(express.json());
 
-app.post('/user',UserController.createUser)
-app.get('/users', UserController.listUsers)
-app.get('/user/:id', UserController.listUsers)
-app.post('/product',ProductController.createProduct)
+//CRUD na entidade User
+app.post('/users', UserController.createUser)
+app.get('/users/:user_id?', UserController.listUsers)
+app.patch('/users/:user_id', UserController.updateUser)
+
+//CRUD na entidade Product
+app.post('/product', ProductController.createProduct)
 
 
 export default app;
