@@ -22,6 +22,45 @@ class UserController{
               });
         }
     }
+
+    async listUsers(req: Request, res: Response) {
+        const {id} = req.params;
+        try {
+            if(id) {
+                const user = await AppDataSource.getRepository(User).findOne({
+                    where:{
+                        id: +id,
+                    },
+                    relations:{
+                        products: true,
+                    }
+                });
+                return res.status(200).json({
+                    ok: true,
+                    user: user,
+                  }); 
+            }else{
+                const users = await AppDataSource.getRepository(User).find({
+                    relations:{
+                        products: true,
+                    }
+                });
+                return res.status(200).json({
+                    ok: true,
+                    users: users,
+                  });
+            }
+
+            
+        } catch (error) {
+            console.log(error, "Erro ao Listar os Usuários!");
+
+            return res.status(500).json({
+            ok: false,
+            mensagem: "Erro ao Listar os Usuários!",
+            });
+        }
+    }
 }
 
 export default new UserController;
