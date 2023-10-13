@@ -37,7 +37,7 @@ class UserController {
           },
         });
         if (!user) {
-          return res.status(500).json({
+          return res.status(404).json({
             ok: false,
             mensagem: "Usuário não existe!",
           });
@@ -74,7 +74,7 @@ class UserController {
     try {
         const user = await AppDataSource.getRepository(User).findOne({where:{id:+user_id}})
         if(!user) {
-            return res.status(500).json({
+            return res.status(404).json({
             ok: false,
             mensagem: "Usuário não existe!",
           });
@@ -99,6 +99,33 @@ class UserController {
     }
   }
 //Deletando Usuário no modo soft
+async  softRemoveUser(req: Request, res: Response) {
+    const {user_id} = req.params;
+    
+    try {
+        const user = await AppDataSource.getRepository(User).findOne({where:{id:+user_id}})
+        if(!user) {
+            return res.status(404).json({
+            ok: false,
+            mensagem: "Usuário não existe!",
+          });
+        }
+
+        await AppDataSource.getRepository(User).softRemove(user);
+
+        return res.status(200).json({
+            ok: true,
+            mensagem: "Usuário removido com Sucesso!",
+          });
+
+    } catch (error) {
+        console.log(error, "Erro ao remover Usuário!");
+        return res.status(500).json({
+        ok: false,
+        mensagem: "Erro ao remover usuário!",
+        });
+    }
+  }
 }
 
 export default new UserController();

@@ -12,7 +12,7 @@ app.use(express.json());
 app.post('/users', UserController.createUser)
 app.get('/users/:user_id?', UserController.listUsers)
 app.patch('/users/:user_id', UserController.updateUser)
-
+app.delete('/users/:user_id', UserController.softRemoveUser)
 //CRUD na entidade Product
 app.post('/product', ProductController.createProduct)
 
